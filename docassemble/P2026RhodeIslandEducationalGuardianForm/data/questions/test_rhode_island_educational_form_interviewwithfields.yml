@@ -4,6 +4,7 @@ include:
   - docassemble.ALAnyState:any_state.yml
 ---
 metadata:
+  asklit_id: "7c0828687ded405f943c014c8a029949"
   title: |-
     Rhode Island Authorization for Release of Educational Records and Appointment of Guardian
   short title: |-
