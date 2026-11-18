@@ -1,4 +1,11 @@
 ---
+translations:
+  - FamilySpanish02_es.xlsx
+---
+include:
+  - family_spanish_words.yml
+---
+---
 include:
   - docassemble.AssemblyLine:assembly_line.yml
   - docassemble.ALAnyState:any_state.yml
@@ -52,8 +59,7 @@ metadata:
   typical_role: na
   al_weaver_version: "2.3.1"
   generated_on: "2026-09-21"
-  languages:
-    - en
+  languages: [en, es]
   jurisdiction: "NAM-US-US+RI"
   review_date: 2026-09-21
   form_titles:
@@ -96,17 +102,12 @@ code: |
   speak_text = True
   enable_al_language = True
   al_user_default_language = 'en'
-  al_interview_languages = ['en']
+  al_interview_languages = ["en", "es"]
   github_user = ''
   al_next_steps_enabled = True
-  al_next_steps_document_title = 'Authorization'
-  al_next_steps_document_purpose = 'release'
   al_next_steps_help_organization = 'Rhode Island Center for Justice'
   al_next_steps_help_url = 'https://www.rijustice.org'
   al_next_steps_generate_qr_code = False
-  al_next_steps_what_happens_next = 'After completing the form, make sure to keep a signed copy for yourself and provide a copy to the appointed caregiver. This will help ensure they can act on your behalf when needed.'
-  al_next_steps_what_can_decision_maker_do = "The appointed caregiver can discuss educational matters, receive records, and make decisions regarding your child's education. They will act in your absence to ensure your child’s needs are met."
-  al_next_steps_what_happens_if_i_win = "If the caregiver successfully takes on this role, they will be able to manage your child's educational needs. This can provide stability and support for your child during uncertain times."
   # AL_DEFAULT_COUNTRY is set in one of your own code blocks, not here.
   # AL_DEFAULT_STATE is set in one of your own code blocks, not here.
   # al_form_type is set in one of your own code blocks, not here.
@@ -244,7 +245,7 @@ fields:
     grid: 8
 validation code: |
   if not acknowledged_information_use:
-    validation_error("You must accept the terms of use to continue.")
+    validation_error(word("You must accept the terms of use to continue."))
 continue button field: al_intro_screen
 ---
 id: how many parents
@@ -570,15 +571,17 @@ table: users.table
 rows: users
 columns:
   - Name: |
-      row_item.name_full() if defined("row_item.name.first") else ""
+      row_item.name_full() if row_item.name.attribute_defined('first') else ""
   - Address: |
-      row_item.address.block() if defined("row_item.address.address") else ""
+      row_item.address.block() if row_item.address.attribute_defined('address') else ""
   - Signature: |
-      row_item.signature if defined("row_item.signature") else ""
+      row_item.signature if row_item.attribute_defined('signature') else ""
 edit:
   - name.first
   - address.address
 confirm: True
+edit header: |
+  ${ word("Actions") }
 ---
 id: edit children
 continue button field: children.revisit
@@ -597,14 +600,16 @@ table: children.table
 rows: children
 columns:
   - Name: |
-      row_item.name_full() if defined("row_item.name.first") else ""
+      row_item.name_full() if row_item.name.attribute_defined('first') else ""
   - Birthdate: |
-      row_item.birthdate if defined("row_item.birthdate") else ""
+      row_item.birthdate if row_item.attribute_defined('birthdate') else ""
 edit:
   - name.first
   - birthdate
   - school_district
 confirm: True
+edit header: |
+  ${ word("Actions") }
 ---
 id: edit caregivers
 continue button field: caregivers.revisit
@@ -621,13 +626,15 @@ table: caregivers.table
 rows: caregivers
 columns:
   - Name: |
-      row_item.name_full() if defined("row_item.name.first") else ""
+      row_item.name_full() if row_item.name.attribute_defined('first') else ""
   - Address: |
-      row_item.address.block() if defined("row_item.address.address") else ""
+      row_item.address.block() if row_item.address.attribute_defined('address') else ""
 edit:
   - name.first
   - address.address
 confirm: True
+edit header: |
+  ${ word("Actions") }
 ---
 id: download ri_educational_guardian
 event: ri_educational_guardian_download
@@ -703,18 +710,18 @@ attachment:
       - "users1_name_full__2": "${ users }"
       - "users1_address_on_one_line": ${ users[0].address.on_one_line() }
       - "children1_name_full": ${ children[0] }
-      - "children1_birthdate": ${ children[0].birthdate.format() }
+      - "children1_birthdate": ${ children[0].birthdate.format(language='en') }
       - "children2_name_full": ${ children[1] }
-      - "children2_birthdate": ${ children[1].birthdate.format() }
+      - "children2_birthdate": ${ children[1].birthdate.format(language='en') }
       - "children3_name_full": ${ children[2] }
-      - "children3_birthdate": ${ children[2].birthdate.format() }
+      - "children3_birthdate": ${ children[2].birthdate.format(language='en') }
       - "children4_name_full": ${ children[3] }
-      - "children4_birthdate": ${ children[3].birthdate.format() }
+      - "children4_birthdate": ${ children[3].birthdate.format(language='en') }
       - "caregivers_name_full": ${ caregivers[0] }
       - "caregivers_address_on_one_line": ${ caregivers[0].address.on_one_line() }
       - "users1_signature": ${ users[0].signature_if_final(i) }
-      - "signature_date": ${ signature_date.format() }
-      - "signature_date__1": ${ signature_date.format() }
+      - "signature_date": ${ signature_date.format(language='en') }
+      - "signature_date__1": ${ signature_date.format(language='en') }
       - "users2_signature": ${ users[1].signature_if_final(i) }
       - "users2_name_full": ${ users[1] }
       - "notarized_county": ${ notarized_county }
@@ -723,7 +730,7 @@ attachment:
       - "notarized_day": ${ notarized_day }
       - "notary_signature": ${ notary[0].signature_if_final(i) }
       - "notary_name_full": ${ notary[0] }
-      - "notary_commission_expires_date": ${ notary_commission_expires_date.format() }
+      - "notary_commission_expires_date": ${ notary_commission_expires_date.format(language='en') }
 ---
 id: signature choice without typed
 decoration: file-signature
@@ -785,3 +792,11 @@ fields:
           device() and (device().is_mobile or device().is_touch_capable)
         )
 continue button field: saw_signature_choice
+
+---
+language: es
+sections:
+- people: Padres o tutores
+- case_details: Persona cuidadora y menores
+- review_ri_educational_guardian: Revise sus respuestas
+- sign_and_submit: Firmar y descargar
